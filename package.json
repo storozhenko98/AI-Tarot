@@ -1,0 +1,28 @@
+{
+  "name": "ai-tarot",
+  "version": "1.0.0",
+  "description": "An AI-based Tarot Divination System",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/storozhenko98/AI-Tarot.git"
+  },
+  "keywords": [
+    "ai",
+    "tarot",
+    "divination"
+  ],
+  "author": "Mykyta Storozhenko",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/storozhenko98/AI-Tarot/issues"
+  },
+  "homepage": "https://github.com/storozhenko98/AI-Tarot#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "openai": "^3.2.1"
+  }
+}
