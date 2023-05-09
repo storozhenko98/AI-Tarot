@@ -1,10 +1,13 @@
 const express = require('express');
-const openai = require('openai');
 const path = require('path');
 
-// Replace with your OpenAI API key
-const OPENAI_API_KEY = 'your-openai-api-key';
-openai.apiKey = OPENAI_API_KEY;
+const { Configuration, OpenAIApi } = require("openai");
+const { type } = require('os');
+
+const configuration = new Configuration({
+  apiKey:"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",
+});
+const openai = new OpenAIApi(configuration);
 
 const app = express();
 
@@ -15,6 +18,20 @@ app.use((req, res, next) => {
   }
   next();
 });
+//
+app.use(express.json());
+
+app.post('/ai-tarot', (req, res) => {
+  const { question, cards } = req.body;
+  console.log('Question:', question);
+  console.log('Cards:', cards);
+  //convert cards to string
+  const cardsString = cards.join('\n');
+  //call to openai
+  getCompletion(question, cardsString).then((result) => {res.json({ message: result });});
+  //res.json({ message: 'Data received...await more' });
+});
+
 
 // Serve static files from the "public" folder
 app.use(express.static(path.join(__dirname, 'public')));
@@ -23,3 +40,20 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is listening on port ${PORT}`);
 });
+
+
+
+async function getCompletion(question, cards) {
+    try {
+      const completion = await openai.createChatCompletion({
+        model: 'gpt-4',
+        messages: [{ role: 'user', content: `You are tarotGPT. Return an interpretation of the following cards in light of the following quesiton- Cards: ${cards}; Question: ${question}. Make sure your interpretation is just a string.` }],
+      });
+  
+      console.log(completion.data.choices[0].message.content);
+      return completion.data.choices[0].message.content;
+    } catch (error) {
+      console.error('Error creating chat completion:', error);
+    }
+  }
+  
